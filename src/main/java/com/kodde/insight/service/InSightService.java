@@ -1,6 +1,7 @@
 package com.kodde.insight.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.kodde.insight.client.InSightClient;
+import com.kodde.insight.dto.AvailableSolsDTO;
 import com.kodde.insight.dto.SolDTO;
 import com.kodde.insight.utils.Constants;
 
@@ -31,7 +33,7 @@ public class InSightService {
 	private InSightClient inSightClient;
 	
 	@Cacheable(cacheNames = "inSight", key="#root.method.name")
-	public List<SolDTO> getWeatherMeasures() throws JSONException {
+	public AvailableSolsDTO getWeatherMeasures() throws JSONException {
 		String result = inSightClient.getWeatherMeasures(apiKey, feedType, version);
 		
 		JSONObject jsonObj = new JSONObject(result);
@@ -50,6 +52,8 @@ public class InSightService {
 			availableSols.add(solDTO);
 		}
 		
-        return availableSols;
+		AvailableSolsDTO availableSolsDTO = new AvailableSolsDTO(availableSols, new Date());
+		
+        return availableSolsDTO;
     }
 }
