@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.kodde.insight.client.InSightClient;
@@ -16,11 +17,20 @@ import com.kodde.insight.utils.Constants;
 @Service
 public class InSightService {
 
+	@Value("${api.key}")
+	private String apiKey;
+	
+	@Value("${api.feedtype}")
+	private String feedType;
+	
+	@Value("${api.version}")
+	private String version;
+	
 	@Autowired
 	private InSightClient inSightClient;
 	
 	public List<SolDTO> getWeatherMeasures() throws JSONException {
-		String result = inSightClient.getWeatherMeasures("4guzfV3ceojrQKMiY09CZi1omgTHSs4irI7dyzKP", "json", "1.0");
+		String result = inSightClient.getWeatherMeasures(apiKey, feedType, version);
 		
 		JSONObject jsonObj = new JSONObject(result);
 		JSONArray solKeys = jsonObj.getJSONArray(Constants.SOL_KEYS);
