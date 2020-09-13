@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.kodde.insight.client.InSightClient;
@@ -29,6 +30,7 @@ public class InSightService {
 	@Autowired
 	private InSightClient inSightClient;
 	
+	@Cacheable(cacheNames = "inSight", key="#root.method.name")
 	public List<SolDTO> getWeatherMeasures() throws JSONException {
 		String result = inSightClient.getWeatherMeasures(apiKey, feedType, version);
 		
