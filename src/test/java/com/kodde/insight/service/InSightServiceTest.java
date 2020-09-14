@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kodde.insight.client.InSightClient;
 import com.kodde.insight.dto.AvailableSolsDTO;
+import com.kodde.insight.dto.CompleteSolDTO;
 import com.kodde.insight.dto.SolDTO;
 
 @SpringBootTest(properties = "spring.cache.type=NONE")
@@ -40,6 +41,12 @@ public class InSightServiceTest {
 	}
 	
 	@Test
+	public void getWeatherMeasuresPerSolThrowsJSONException() {
+		given(inSightClient.getWeatherMeasures(KEY, FEED_TYPE, VERSION)).willReturn("'634':'AT':{'av':-61.082,'ct':314284,'mn':-94.58,'mx':-16.136},'First_UTC':'2020-09-07T15:29:16Z','HWS':{'av':6.685,'ct':156912,'mn':0.452,'mx':17.887},'Last_UTC':'2020-09-08T16:08:49Z','PRE':{'av':775.846,'ct':159956,'mn':746.3902,'mx':793.7311},'Season':'summer',}'sol_keys':['634']}");
+		assertThrows(JSONException.class, () -> inSightService.getWeatherMeasuresPerSol("634"));
+	}
+	
+	@Test
 	public void getWeatherMeasures() throws JSONException {
 		given(inSightClient.getWeatherMeasures(KEY, FEED_TYPE, VERSION)).willReturn("{'634':{'AT':{'av':-61.082,'ct':314284,'mn':-94.58,'mx':-16.136},'First_UTC':'2020-09-07T15:29:16Z','HWS':{'av':6.685,'ct':156912,'mn':0.452,'mx':17.887},'Last_UTC':'2020-09-08T16:08:49Z','PRE':{'av':775.846,'ct':159956,'mn':746.3902,'mx':793.7311},'Season':'summer'},'sol_keys':['634']}");
 		
@@ -49,5 +56,17 @@ public class InSightServiceTest {
 				new Double(-61.082));
 		availableSols.add(solDTO);
 		assertThat(actual.getAvailableSols().get(0)).isEqualTo(availableSols.get(0));
+	}
+	
+	@Test
+	public void getWeatherMeasuresPerSol() throws JSONException {
+		given(inSightClient.getWeatherMeasures(KEY, FEED_TYPE, VERSION)).willReturn("{'634':{'AT':{'av':-61.082,'ct':314284,'mn':-94.58,'mx':-16.136},'First_UTC':'2020-09-07T15:29:16Z','HWS':{'av':6.685,'ct':156912,'mn':0.452,'mx':17.887},'Last_UTC':'2020-09-08T16:08:49Z','PRE':{'av':775.846,'ct':159956,'mn':746.3902,'mx':793.7311},'Season':'summer'},'sol_keys':['634']}");
+		
+		CompleteSolDTO actual = inSightService.getWeatherMeasuresPerSol("634");
+		CompleteSolDTO completeSolDTO = new CompleteSolDTO(634,
+				new Double(-94.58),
+				new Double(-16.136),
+				new Double(-61.082));
+		assertThat(actual).isEqualTo(completeSolDTO);
 	}
 }
