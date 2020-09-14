@@ -29,7 +29,7 @@ public class InSightApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/insight/weather")
+                registry.addMapping("/insight/**")
                 		.allowedOrigins(allowedOrigin)
                 		.allowedHeaders(allowedHeaders)
                 		.maxAge(maxAge);

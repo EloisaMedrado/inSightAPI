@@ -45,9 +45,7 @@ public class InSightServiceTest {
 		
 		AvailableSolsDTO actual = inSightService.getWeatherMeasures();
 		List<SolDTO> availableSols = new ArrayList<SolDTO>();
-		SolDTO solDTO = new SolDTO(634, 
-				new Double(-94.58), 
-				new Double(-16.136), 
+		SolDTO solDTO = new SolDTO(634,
 				new Double(-61.082));
 		availableSols.add(solDTO);
 		assertThat(actual.getAvailableSols().get(0)).isEqualTo(availableSols.get(0));
