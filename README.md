@@ -113,7 +113,7 @@ Inside the "lastUpdate" key, the date and time of the last request made in the N
 	   "high":-16.453
 	}
 
-Sol objects are returned with the keys:
+The Sol object is returned:
 	1) "sol" : sol key;
 	2) "low": minimum temperature;
 	3) "high": maximum temperature;
