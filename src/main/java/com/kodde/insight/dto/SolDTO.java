@@ -42,5 +42,38 @@ public class SolDTO implements Serializable {
 	public void setAverage(Double average) {
 		this.average = average;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SolDTO other = (SolDTO) obj;
+		if (average == null) {
+			if (other.average != null)
+				return false;
+		} else if (!average.equals(other.average))
+			return false;
+		if (high == null) {
+			if (other.high != null)
+				return false;
+		} else if (!high.equals(other.high))
+			return false;
+		if (low == null) {
+			if (other.low != null)
+				return false;
+		} else if (!low.equals(other.low))
+			return false;
+		if (sol != other.sol)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "SolDTO [sol=" + sol + ", low=" + low + ", high=" + high + ", average=" + average + "]";
+	}
 }
