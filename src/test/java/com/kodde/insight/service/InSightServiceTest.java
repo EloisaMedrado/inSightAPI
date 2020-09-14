@@ -40,18 +40,16 @@ public class InSightServiceTest {
 	}
 	
 	@Test
-	public void getWeatherMeasures(){
+	public void getWeatherMeasures() throws JSONException {
 		given(inSightClient.getWeatherMeasures(KEY, FEED_TYPE, VERSION)).willReturn("{'634':{'AT':{'av':-61.082,'ct':314284,'mn':-94.58,'mx':-16.136},'First_UTC':'2020-09-07T15:29:16Z','HWS':{'av':6.685,'ct':156912,'mn':0.452,'mx':17.887},'Last_UTC':'2020-09-08T16:08:49Z','PRE':{'av':775.846,'ct':159956,'mn':746.3902,'mx':793.7311},'Season':'summer'},'sol_keys':['634']}");
-		try {
-			AvailableSolsDTO actual = inSightService.getWeatherMeasures();
-			List<SolDTO> availableSols = new ArrayList<SolDTO>();
-			SolDTO solDTO = new SolDTO(634, 
-					new Double(-94.58), 
-					new Double(-16.136), 
-					new Double(-61.082));
-			availableSols.add(solDTO);
-			assertThat(actual.getAvailableSols().get(0)).isEqualTo(availableSols.get(0));
-		} catch (JSONException e) {
-		}
+		
+		AvailableSolsDTO actual = inSightService.getWeatherMeasures();
+		List<SolDTO> availableSols = new ArrayList<SolDTO>();
+		SolDTO solDTO = new SolDTO(634, 
+				new Double(-94.58), 
+				new Double(-16.136), 
+				new Double(-61.082));
+		availableSols.add(solDTO);
+		assertThat(actual.getAvailableSols().get(0)).isEqualTo(availableSols.get(0));
 	}
 }
